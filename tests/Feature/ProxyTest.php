@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
+use function Pest\Laravel\get;
 use function PHPUnit\Framework\assertSame;
 
 beforeEach(function () {
@@ -13,19 +14,37 @@ beforeEach(function () {
 
 test('proxy can return pinkary profile', function () {
     // Arrange
+    $responseBody = <<<'HTML'
+        <link rel="shortcut icon" href="https://pinkary.com/img/ico.svg">
+        <meta property="og:url" content="https://pinkary.com/@kapersoft">
+        <link rel="preload" as="style" href="https://pinkary.com/build/assets/app.css">
+        <img src="https://pinkary.com/storage/avatars/some-random-username.png?foo=bar">
+    HTML;
     Http::fake([
-        'https://pinkary.com/@some-random-username' => Http::response('pinkary profile', 200, ['Content-Type' => 'text/html; charset=UTF-8']),
+        'https://pinkary.com/@some-random-username' => Http::response($responseBody, 200, ['Content-Type' => 'text/html; charset=UTF-8']),
     ]);
 
     // Act
-    $response = $this->get('/');
+    $response = get('/');
 
     // Assert
     $response->assertStatus(200);
-    $response->assertSee('pinkary profile');
+    $response->assertSee('http://localhost/img/ico.svg');
+    $response->assertDontSee('https://pinkary.com/img/ico.svg');
+    $response->assertSee('http://localhost/build/assets/app.css');
+    $response->assertDontSee('https://pinkary.com/img/ico.svg');
+    $response->assertSee('http://localhost/storage/avatars/some-random-username.png?foo=bar');
+    $response->assertDontSee('https://pinkary.com/img/ico.svg');
+    $response->assertSee('https://pinkary.com/@kapersoft');
+    $response->assertDontSee('http://localhost/@kapersoft');
     $response->assertHeader('Content-Type', 'text/html; charset=UTF-8');
     assertSame([
-        'body' => 'pinkary profile',
+        'body' => $responseBody = <<<'HTML'
+            <link rel="shortcut icon" href="http://localhost/img/ico.svg">
+            <meta property="og:url" content="https://pinkary.com/@kapersoft">
+            <link rel="preload" as="style" href="http://localhost/build/assets/app.css">
+            <img src="http://localhost/storage/avatars/some-random-username.png?foo=bar">
+        HTML,
         'contentType' => 'text/html; charset=UTF-8',
     ], Cache::get('https://pinkary.com/@some-random-username'));
 });

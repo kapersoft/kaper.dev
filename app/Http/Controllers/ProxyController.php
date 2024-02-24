@@ -25,20 +25,29 @@ class ProxyController extends Controller
             ->prepend(Config::get('pinkary.base_url'))
             ->__toString();
 
-        $response = Cache::remember($url, Config::get('pinkary.cache_ttl'), function () use ($url) {
+        $response = Cache::remember($url, Config::get('pinkary.cache_ttl'), function () use ($url, $request) {
             $response = Http::get($url);
 
+            $body = Str::of($response->body())
+                ->replace([
+                    Config::get('pinkary.base_url').'/img',
+                    Config::get('pinkary.base_url').'/storage',
+                    Config::get('pinkary.base_url').'/build',
+                ],
+                    [
+                        $request->schemeAndHttpHost().'/img',
+                        $request->schemeAndHttpHost().'/storage',
+                        $request->schemeAndHttpHost().'/build',
+                    ])
+                ->__toString();
+
             return [
-                'body' => $response->body(),
+                'body' => $body,
                 'contentType' => $response->header('Content-Type'),
             ];
         });
 
-        $body = Str::of($response['body'])
-            ->replace(Config::get('pinkary.base_url'), $request->schemeAndHttpHost())
-            ->__toString();
-
-        return Response::make($body, 200, [
+        return Response::make($response['body'], 200, [
             'Content-Type' => $response['contentType'],
         ]);
     }
