@@ -1,14 +1,20 @@
 <?php
 
+use function PHPUnit\Framework\assertSame;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
+
 use Illuminate\Support\Facades\Http;
 
-use function PHPUnit\Framework\assertSame;
+beforeEach(function () {
+    Cache::clear();
+    Config::set('pinkary.username', 'some-random-username');
+});
 
 test('proxy can return pinkary profile', function () {
     // Arrange
     Http::fake([
-        'https://pinkary.com/@kapersoft' => Http::response('pinkary profile', 200, ['Content-Type' => 'text/html; charset=UTF-8']),
+        'https://pinkary.com/@some-random-username' => Http::response('pinkary profile', 200, ['Content-Type' => 'text/html; charset=UTF-8']),
     ]);
 
     // Act
@@ -20,22 +26,18 @@ test('proxy can return pinkary profile', function () {
     $response->assertHeader('Content-Type', 'text/html; charset=UTF-8');
     assertSame([
         'body' => 'pinkary profile',
-        'headers' => [
-            'Content-Type' => [
-                0 => 'text/html; charset=UTF-8',
-            ],
-        ],
-    ], Cache::get('/'));
+        'contentType' => 'text/html; charset=UTF-8',
+    ], Cache::get('https://pinkary.com/@some-random-username'));
 });
 
 test('proxy can return pinkary asset', function () {
     // Arrange
     Http::fake([
-        'https://pinkary.com/storage/avatars/ff01d2e6480cc91eb96b00949817b6ccf30940b999d2551a77a2feed5d61d7a8.png' => Http::response('pinkary profile picture', 200, ['Content-Type' => 'image/png']),
+        'https://pinkary.com/storage/avatars/some-random-username.png?foo=bar' => Http::response('pinkary profile picture', 200, ['Content-Type' => 'image/png']),
     ]);
 
     // Act
-    $response = $this->get('/storage/avatars/ff01d2e6480cc91eb96b00949817b6ccf30940b999d2551a77a2feed5d61d7a8.png');
+    $response = $this->get('/storage/avatars/some-random-username.png?foo=bar');
 
     // Assert
     $response->assertStatus(200);
@@ -43,10 +45,6 @@ test('proxy can return pinkary asset', function () {
     $response->assertHeader('Content-Type', 'image/png');
     assertSame([
         'body' => 'pinkary profile picture',
-        'headers' => [
-            'Content-Type' => [
-                0 => 'image/png',
-            ],
-        ],
-    ], Cache::get('storage/avatars/ff01d2e6480cc91eb96b00949817b6ccf30940b999d2551a77a2feed5d61d7a8.png'));
+        'contentType' => 'image/png',
+    ], Cache::get('https://pinkary.com/storage/avatars/some-random-username.png?foo=bar'));
 });
