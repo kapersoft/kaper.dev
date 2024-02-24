@@ -1,10 +1,10 @@
 <?php
 
-use function PHPUnit\Framework\assertSame;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
-
 use Illuminate\Support\Facades\Http;
+
+use function PHPUnit\Framework\assertSame;
 
 beforeEach(function () {
     Cache::clear();
