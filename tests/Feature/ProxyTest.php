@@ -1,9 +1,9 @@
 <?php
 
-use function PHPUnit\Framework\assertSame;
 use Illuminate\Support\Facades\Cache;
-
 use Illuminate\Support\Facades\Http;
+
+use function PHPUnit\Framework\assertSame;
 
 test('proxy can return pinkary profile', function () {
     // Arrange
@@ -21,10 +21,10 @@ test('proxy can return pinkary profile', function () {
     assertSame([
         'body' => 'pinkary profile',
         'headers' => [
-            'Content-Type' =>[
+            'Content-Type' => [
                 0 => 'text/html; charset=UTF-8',
             ],
-        ]
+        ],
     ], Cache::get('/'));
 });
 
@@ -44,9 +44,9 @@ test('proxy can return pinkary asset', function () {
     assertSame([
         'body' => 'pinkary profile picture',
         'headers' => [
-            'Content-Type' =>[
+            'Content-Type' => [
                 0 => 'image/png',
             ],
-        ]
+        ],
     ], Cache::get('storage/avatars/ff01d2e6480cc91eb96b00949817b6ccf30940b999d2551a77a2feed5d61d7a8.png'));
 });
