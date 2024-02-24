@@ -1,4 +1,4 @@
-# [kaper.dev](https://kaper.dev), a Pinkary proxy
+# [kaper.dev](https://kaper.dev); a Pinkary proxy
 
 This repository contains the backend of the <https://kaper.dev> website. The contents of the site are proxied from <https://pinkary.com/@kapersoft>.
 
@@ -6,7 +6,7 @@ This repository contains the backend of the <https://kaper.dev> website. The con
 
 ## Using this repository
 
-If you like to deploy your Pinkary linksite to your personal domain, feel free to use this repository
+If you like to deploy your Pinkary linksite to your personal domain, feel free to use this repository.
 
 ### Installation
 
