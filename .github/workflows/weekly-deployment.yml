@@ -1,0 +1,15 @@
+name: weekly-deployment
+on:
+  schedule:
+    - cron:  '0 5 * * 1'
+
+jobs:
+  deployment:
+    name: Deploy site
+    runs-on: ubuntu-latest
+    steps:
+    - name: Send http request
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: ${{ secrets.PLOI_DEPLOY_URL }}
+        method: 'OPTIONS'
