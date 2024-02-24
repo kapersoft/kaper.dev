@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
 
-class ProxyController extends Controller
+class ProxyController
 {
     /**
      * Handle the incoming request.
