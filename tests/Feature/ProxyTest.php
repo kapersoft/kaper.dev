@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Http;
 use function Pest\Laravel\get;
 use function PHPUnit\Framework\assertSame;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Cache::clear();
     Config::set('pinkary.username', 'some-random-username');
 });
 
-test('proxy can return pinkary profile', function () {
+test('proxy can return pinkary profile', function (): void {
     // Arrange
     $responseBody = <<<'HTML'
         <link rel="shortcut icon" href="https://pinkary.com/img/ico.svg">
@@ -49,7 +49,7 @@ test('proxy can return pinkary profile', function () {
     ], Cache::get('https://pinkary.com/@some-random-username'));
 });
 
-test('proxy can return pinkary asset', function () {
+test('proxy can return pinkary asset', function (): void {
     // Arrange
     Http::fake([
         'https://pinkary.com/storage/avatars/some-random-username.png?foo=bar' => Http::response('pinkary profile picture', 200, ['Content-Type' => 'image/png']),

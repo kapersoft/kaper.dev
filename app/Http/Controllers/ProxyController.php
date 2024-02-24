@@ -19,15 +19,14 @@ class ProxyController
     {
         $url = Str::of($request->getRequestUri())
             ->when(
-                fn (Stringable $url) => $url->is('/'),
-                fn (Stringable $str) => $str->append('@'.Config::get('pinkary.username')),
+                static fn (Stringable $stringable) => $stringable->is('/'),
+                static fn (Stringable $stringable) => $stringable->append('@'.Config::get('pinkary.username')),
             )
             ->prepend(Config::get('pinkary.base_url'))
             ->__toString();
 
-        $response = Cache::remember($url, Config::get('pinkary.cache_ttl'), function () use ($url, $request) {
+        $response = Cache::remember($url, Config::get('pinkary.cache_ttl'), static function () use ($url, $request): array {
             $response = Http::get($url);
-
             $body = Str::of($response->body())
                 ->replace([
                     Config::get('pinkary.base_url').'/img',

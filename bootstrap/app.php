@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware) {
+    ->withMiddleware(static function (Middleware $middleware): void {
         $middleware->remove([StartSession::class,
             AddQueuedCookiesToResponse::class,
             ShareErrorsFromSession::class,
@@ -23,6 +23,6 @@ return Application::configure(basePath: dirname(__DIR__))
             SubstituteBindings::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions) {
+    ->withExceptions(static function (Exceptions $exceptions): void {
         //
     })->create();
