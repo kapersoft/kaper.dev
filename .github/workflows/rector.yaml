@@ -1,0 +1,30 @@
+name: Rector
+
+on: [push, pull_request]
+
+jobs:
+  rector:
+    name: Rector (PHP ${{ matrix.php-versions }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['8.3']
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, dom, fileinfo, mysql
+          coverage: xdebug
+
+      - name: Composer install
+        uses: 'ramsey/composer-install@v2'
+
+      - name: Run rector
+        run: vendor/bin/rector --ansi --dry-run
