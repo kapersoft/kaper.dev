@@ -20,7 +20,7 @@ If you like to deploy your Pinkary linksite to your personal domain, feel free t
 
 By default all requests to Pinkary.com are cached for one hour. If you like, you can change this value by adding the `PINKARY_CACHE_TTL`-key with the desised TTL in your `.env`-file.
 
-All requests are proxied to <https://pinkary.com>. If, for some reason, the domain is changed, you can specify an alternative domain by addning the `PINKARY_BASE_URL`-ket with the new domain in your `.env`-file.
+All requests are proxied to <https://pinkary.com>. If, for some reason, the domain is changed, you can specify an alternative domain by adding the `PINKARY_BASE_URL`-key with the new domain in your `.env`-file.
 
 ## Testing
 
