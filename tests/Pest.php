@@ -11,10 +11,14 @@
 |
 */
 
+use Illuminate\Support\Facades\Http;
+
 uses(
     Tests\TestCase::class,
     // Illuminate\Foundation\Testing\RefreshDatabase::class,
 )->in('Feature');
+
+uses()->beforeEach(fn () => Http::preventStrayRequests())->in(__DIR__);
 
 /*
 |--------------------------------------------------------------------------

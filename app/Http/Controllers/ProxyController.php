@@ -36,7 +36,7 @@ class ProxyController extends Controller
         $body = (string) str($body)->replace('https://pinkary.com', $request->schemeAndHttpHost());
 
         return Response::make($body, 200, [
-            'Content-Type' => $headers['Content-Type'],
+            'Content-Type' => $headers['Content-Type'] ?? 'text/html',
         ]);
     }
 }
