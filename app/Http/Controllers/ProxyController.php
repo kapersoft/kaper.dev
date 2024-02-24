@@ -15,7 +15,7 @@ class ProxyController extends Controller
     public function __invoke(Request $request)
     {
         if ($request->path() === '/') {
-            $url = "https://pinkary.com/@kapersoft";
+            $url = 'https://pinkary.com/@kapersoft';
         } else {
             $url = "https://pinkary.com/{$request->path()}";
         }
@@ -24,15 +24,16 @@ class ProxyController extends Controller
             $request->path(),
             now()->addHour(),
             function () use ($url) {
-            $response = Http::get($url);
+                $response = Http::get($url);
+
                 return [
-                    'body'  => $response->body(),
+                    'body' => $response->body(),
                     'headers' => $response->headers(),
                 ];
             }
         );
 
-        $body = (string)str($body)->replace('https://pinkary.com', $request->schemeAndHttpHost());
+        $body = (string) str($body)->replace('https://pinkary.com', $request->schemeAndHttpHost());
 
         return Response::make($body, 200, [
             'Content-Type' => $headers['Content-Type'],
