@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,11 +17,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(static function (Middleware $middleware): void {
-        $middleware->remove([StartSession::class,
+        $middleware->web(remove: [
             AddQueuedCookiesToResponse::class,
+            EncryptCookies::class,
             ShareErrorsFromSession::class,
-            ValidateCsrfToken::class,
+            StartSession::class,
             SubstituteBindings::class,
+            ValidateCsrfToken::class,
         ]);
     })
     ->withExceptions(static function (Exceptions $exceptions): void {
