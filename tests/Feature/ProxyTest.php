@@ -27,19 +27,19 @@ test('proxy can return pinkary profile', function (): void {
     ]);
 
     // Act
-    $response = get('/');
+    $testResponse = get('/');
 
     // Assert
-    $response->assertStatus(200);
-    $response->assertSee('http://localhost/img/ico.svg');
-    $response->assertDontSee('https://pinkary.com/img/ico.svg');
-    $response->assertSee('http://localhost/build/assets/app.css');
-    $response->assertDontSee('https://pinkary.com/img/ico.svg');
-    $response->assertSee('http://localhost/storage/avatars/some-random-username.png?foo=bar');
-    $response->assertDontSee('https://pinkary.com/img/ico.svg');
-    $response->assertSee('https://pinkary.com/@kapersoft');
-    $response->assertDontSee('http://localhost/@kapersoft');
-    $response->assertHeader('Content-Type', 'text/html; charset=UTF-8');
+    $testResponse->assertStatus(200);
+    $testResponse->assertSee('http://localhost/img/ico.svg');
+    $testResponse->assertDontSee('https://pinkary.com/img/ico.svg');
+    $testResponse->assertSee('http://localhost/build/assets/app.css');
+    $testResponse->assertDontSee('https://pinkary.com/img/ico.svg');
+    $testResponse->assertSee('http://localhost/storage/avatars/some-random-username.png?foo=bar');
+    $testResponse->assertDontSee('https://pinkary.com/img/ico.svg');
+    $testResponse->assertSee('https://pinkary.com/@kapersoft');
+    $testResponse->assertDontSee('http://localhost/@kapersoft');
+    $testResponse->assertHeader('Content-Type', 'text/html; charset=UTF-8');
     assertSame([
         'body' => $responseBody = <<<'HTML'
             <link rel="shortcut icon" href="http://localhost/img/ico.svg">

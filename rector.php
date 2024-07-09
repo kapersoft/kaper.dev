@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Rector\CodingStyle\Rector\ArrowFunction\StaticArrowFunctionRector;
-use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
 use Rector\Config\RectorConfig;
 use RectorLaravel\Set\LaravelSetList;
 
@@ -33,7 +31,4 @@ return RectorConfig::configure()
         LaravelSetList::LARAVEL_100,
         LaravelSetList::LARAVEL_CODE_QUALITY,
     ])
-    ->withSkip([
-        StaticClosureRector::class,
-        StaticArrowFunctionRector::class,
-    ]);
+    ->withImportNames(removeUnusedImports: true);
