@@ -19,32 +19,17 @@ class ProxyController
      */
     public function __invoke(Request $request)
     {
-        $url = Str::of($request->getRequestUri())
+        $url = (string) Str::of($request->getRequestUri())
             ->when(
                 static fn (Stringable $stringable) => $stringable->is('/'),
                 static fn (Stringable $stringable) => $stringable->append('@'.Config::get('pinkary.username')),
             )
-            ->prepend(Config::get('pinkary.base_url'))
-            ->__toString();
+            ->prepend(Config::get('pinkary.base_url'));
 
-        $response = Cache::remember($url, Config::get('pinkary.cache_ttl'), static function () use ($url, $request): array {
+        $response = Cache::remember($url, Config::get('pinkary.cache_ttl'), function () use ($url, $request): array {
             $response = Http::get($url);
-            $body = Str::of($response->body())
-                ->replace([
-                    Config::get('pinkary.base_url').'/img',
-                    Config::get('pinkary.base_url').'/storage',
-                    Config::get('pinkary.base_url').'/build',
-                    Config::get('pinkary.base_url').'/fonts',
-                    Config::get('pinkary.base_url').'/profile',
-                ],
-                    [
-                        $request->schemeAndHttpHost().'/img',
-                        $request->schemeAndHttpHost().'/storage',
-                        $request->schemeAndHttpHost().'/build',
-                        $request->schemeAndHttpHost().'/fonts',
-                        $request->schemeAndHttpHost().'/profile',
-                    ])
-                ->__toString();
+            $body = (string) $response->body();
+            $body = $this->replacePinkaryDomainWithHostDomain($body, $request);
 
             return [
                 'body' => $body,
@@ -55,5 +40,24 @@ class ProxyController
         return Response::make($response['body'], 200, [
             'Content-Type' => $response['contentType'],
         ]);
+    }
+
+    private function replacePinkaryDomainWithHostDomain(string $body, Request $request): string
+    {
+        $paths = [
+            '/img',
+            '/storage',
+            '/build',
+            '/fonts',
+            '/profile',
+        ];
+        $wireClickPattern = '/\s*wire:click="[^"]*"/';
+
+        return (string) Str::of($body)
+            ->replace(
+                array_map(fn (string $path): string => Config::get('pinkary.base_url').$path, $paths),
+                array_map(fn (string $path): string => $request->schemeAndHttpHost().$path, $paths),
+            )
+            ->replaceMatches($wireClickPattern, '');
     }
 }

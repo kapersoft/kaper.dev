@@ -21,6 +21,10 @@ test('proxy can return pinkary profile', function (): void {
         <meta property="og:url" content="https://pinkary.com/@kapersoft">
         <link rel="preload" as="style" href="https://pinkary.com/build/assets/app.css">
         <img src="https://pinkary.com/storage/avatars/some-random-username.png?foo=bar">
+        <script>
+            axios.post('https://pinkary.com/profile/timezone', { timezone })
+        </script>
+        <div class="tailwind-class" wire:click="click(1719)">
     HTML;
     Http::fake([
         'https://pinkary.com/@some-random-username' => Http::response($responseBody, 200, ['Content-Type' => 'text/html; charset=UTF-8']),
@@ -46,6 +50,10 @@ test('proxy can return pinkary profile', function (): void {
             <meta property="og:url" content="https://pinkary.com/@kapersoft">
             <link rel="preload" as="style" href="http://localhost/build/assets/app.css">
             <img src="http://localhost/storage/avatars/some-random-username.png?foo=bar">
+            <script>
+                axios.post('http://localhost/profile/timezone', { timezone })
+            </script>
+            <div class="tailwind-class">
         HTML,
         'contentType' => 'text/html; charset=UTF-8',
     ], Cache::get('https://pinkary.com/@some-random-username'));
