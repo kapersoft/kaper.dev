@@ -35,12 +35,14 @@ class ProxyController
                     Config::get('pinkary.base_url').'/storage',
                     Config::get('pinkary.base_url').'/build',
                     Config::get('pinkary.base_url').'/fonts',
+                    Config::get('pinkary.base_url').'/profile',
                 ],
                     [
                         $request->schemeAndHttpHost().'/img',
                         $request->schemeAndHttpHost().'/storage',
                         $request->schemeAndHttpHost().'/build',
                         $request->schemeAndHttpHost().'/fonts',
+                        $request->schemeAndHttpHost().'/profile',
                     ])
                 ->__toString();
 
