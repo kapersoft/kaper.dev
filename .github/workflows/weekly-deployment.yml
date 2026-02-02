@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Send http request
-      uses: fjogeleit/http-request-action@v1
+      uses: fjogeleit/http-request-action@v2
       with:
         url: ${{ secrets.PLOI_DEPLOY_URL }}
         method: 'OPTIONS'
