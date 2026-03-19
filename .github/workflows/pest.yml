@@ -24,7 +24,7 @@ jobs:
           coverage: xdebug
 
       - name: Composer install
-        uses: 'ramsey/composer-install@v3'
+        uses: 'ramsey/composer-install@v4'
 
       - name: Prepare the application
         run: |
