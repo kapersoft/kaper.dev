@@ -15,7 +15,7 @@ return RectorConfig::configure()
         __DIR__.'/tests',
         __DIR__.'/rector.php',
     ])
-    ->withPhpSets(php83: true)
+    ->withPhpSets(php85: true)
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
@@ -25,10 +25,9 @@ return RectorConfig::configure()
         naming: true,
         instanceOf: true,
         earlyReturn: true,
-        strictBooleans: true
     )
     ->withSets([
-        LaravelSetList::LARAVEL_100,
+        LaravelSetList::LARAVEL_130,
         LaravelSetList::LARAVEL_CODE_QUALITY,
     ])
     ->withImportNames(removeUnusedImports: true);
