@@ -1,0 +1,30 @@
+name: Composer Normalize
+
+on: [push, pull_request]
+
+jobs:
+  composer-normalize:
+    name: Composer Normalize (PHP ${{ matrix.php-versions }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['8.5']
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, dom, fileinfo, mysql
+          coverage: xdebug
+
+      - name: Composer install
+        uses: ramsey/composer-install@v4
+
+      - name: Check composer.json is normalized
+        run: composer normalize --dry-run
