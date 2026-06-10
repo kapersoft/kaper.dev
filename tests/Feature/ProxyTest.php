@@ -66,12 +66,12 @@ test('proxy can return pinkary asset', function (): void {
     ]);
 
     // Act
-    $response = get('/storage/avatars/some-random-username.png?foo=bar');
+    $testResponse = get('/storage/avatars/some-random-username.png?foo=bar');
 
     // Assert
-    $response->assertStatus(200);
-    $response->assertSee('pinkary profile picture');
-    $response->assertHeader('Content-Type', 'image/png');
+    $testResponse->assertStatus(200);
+    $testResponse->assertSee('pinkary profile picture');
+    $testResponse->assertHeader('Content-Type', 'image/png');
     assertSame([
         'body' => 'pinkary profile picture',
         'contentType' => 'image/png',
