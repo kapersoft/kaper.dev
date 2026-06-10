@@ -14,6 +14,7 @@
     "require-dev": {
         "driftingly/rector-laravel": "^2.5",
         "ergebnis/composer-normalize": "^2.52",
+        "larastan/larastan": "^3.0",
         "laravel/boost": "^2.4",
         "laravel/pao": "^1.1",
         "laravel/pint": "^1.29",
@@ -67,6 +68,9 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --ansi"
+        ],
+        "analyse": [
+            "vendor/bin/phpstan analyse --memory-limit=512M"
         ]
     }
 }

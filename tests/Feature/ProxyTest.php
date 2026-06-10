@@ -66,7 +66,7 @@ test('proxy can return pinkary asset', function (): void {
     ]);
 
     // Act
-    $response = $this->get('/storage/avatars/some-random-username.png?foo=bar');
+    $response = get('/storage/avatars/some-random-username.png?foo=bar');
 
     // Assert
     $response->assertStatus(200);
