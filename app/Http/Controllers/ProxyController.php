@@ -48,7 +48,7 @@ class ProxyController
     {
         $ttl = (int) Config::get('pinkary.cache_ttl');
 
-        return "public, max-age={$ttl}, s-maxage={$ttl}";
+        return sprintf('public, max-age=%d, s-maxage=%d', $ttl, $ttl);
     }
 
     private function replacePinkaryDomainWithHostDomain(string $body, Request $request): string
