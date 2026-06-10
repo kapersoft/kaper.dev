@@ -1,30 +1,28 @@
-# [kaper.dev](https://kaper.dev); a Pinkary proxy
+# [kaper.dev](https://kaper.dev)
 
-This repository contains the backend of the <https://kaper.dev> website. The contents of the site are proxied from <https://pinkary.com/@kapersoft>.
+Personal profile site for [Jan Willem Kaper](https://github.com/kapersoft), built with Laravel.
 
-[Pinkary](pinkary.com) is a linksite made by [Nuno Maduro](https://github.com/nunomaduro). See this [LinkedIn post](https://www.linkedin.com/posts/nunomaduro_pinkary-update-for-you-sort-your-links-by-activity-7165462165611659264-mU3J/) and [Twitter feed](https://twitter.com/enunomaduro/status/1759576002626261300) for more information.
+## Customization
 
-## Using this repository
+Profile content, links, and skill tags live in `config/profile.php`.
 
-If you like to deploy your Pinkary linksite to your personal domain, feel free to use this repository.
+Replace `public/images/headshot.jpg` with your own photo.
 
-### Installation
+## Development
 
-- Clone this project.
-- Run `composer install`.
-- Copy `.env.example` to `.env`.
-- Open `.env`-file in your editor, look for `PINKARY_USERNAME`, and fill in your Pinkary username.
-- Deploy to your domain!
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+```
 
-### More options
-
-By default all requests to Pinkary.com are cached for one hour. If you like, you can change this value by adding the `PINKARY_CACHE_TTL`-key with the desised TTL in your `.env`-file.
-
-All requests are proxied to <https://pinkary.com>. If, for some reason, the domain is changed, you can specify an alternative domain by adding the `PINKARY_BASE_URL`-key with the new domain in your `.env`-file.
+Locally, the site runs on [Laravel Herd](https://herd.laravel.com/) at [https://kaper.dev.test](https://kaper.dev.test).
 
 ## Testing
 
-Tests are defined in the `/tests`-folder. You can test this repo by running `php artisan test`.
+```bash
+php artisan test
+```
 
 ## Security
 

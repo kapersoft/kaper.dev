@@ -1,11 +1,11 @@
 {
     "name": "kapersoft/kaper.dev",
-    "description": "Proxy for @kapersoft Pinkary profile.",
+    "description": "Personal profile site for kaper.dev.",
     "license": "MIT",
     "type": "project",
     "keywords": [
-        "pinkary",
-        "kapersoft"
+        "kapersoft",
+        "profile"
     ],
     "require": {
         "php": "^8.5",
