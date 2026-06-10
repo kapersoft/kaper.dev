@@ -38,8 +38,17 @@ class ProxyController
         });
 
         return Response::make($response['body'], 200, [
+            'Cache-Control' => $this->edgeCacheControlHeader(),
             'Content-Type' => $response['contentType'],
+            'Vary' => 'Host',
         ]);
+    }
+
+    private function edgeCacheControlHeader(): string
+    {
+        $ttl = (int) Config::get('pinkary.cache_ttl');
+
+        return "public, max-age={$ttl}, s-maxage={$ttl}";
     }
 
     private function replacePinkaryDomainWithHostDomain(string $body, Request $request): string

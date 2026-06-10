@@ -44,6 +44,11 @@ test('proxy can return pinkary profile', function (): void {
     $testResponse->assertSee('https://pinkary.com/@kapersoft');
     $testResponse->assertDontSee('http://localhost/@kapersoft');
     $testResponse->assertHeader('Content-Type', 'text/html; charset=UTF-8');
+    $cacheControl = (string) $testResponse->headers->get('Cache-Control');
+    expect($cacheControl)->toContain('public')
+        ->and($cacheControl)->toContain('max-age=3600')
+        ->and($cacheControl)->toContain('s-maxage=3600');
+    $testResponse->assertHeader('Vary', 'Host');
     assertSame([
         'body' => $responseBody = <<<'HTML'
             <link rel="shortcut icon" href="http://localhost/img/ico.svg">
@@ -72,6 +77,11 @@ test('proxy can return pinkary asset', function (): void {
     $testResponse->assertStatus(200);
     $testResponse->assertSee('pinkary profile picture');
     $testResponse->assertHeader('Content-Type', 'image/png');
+    $cacheControl = (string) $testResponse->headers->get('Cache-Control');
+    expect($cacheControl)->toContain('public')
+        ->and($cacheControl)->toContain('max-age=3600')
+        ->and($cacheControl)->toContain('s-maxage=3600');
+    $testResponse->assertHeader('Vary', 'Host');
     assertSame([
         'body' => 'pinkary profile picture',
         'contentType' => 'image/png',
