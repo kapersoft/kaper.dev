@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Middleware\SetEdgeCacheHeaders;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Application;
@@ -27,6 +28,8 @@ return Application::configure(basePath: dirname(__DIR__))
             SubstituteBindings::class,
             PreventRequestForgery::class,
         ]);
+
+        $middleware->append(SetEdgeCacheHeaders::class);
     })
     ->withExceptions(static function (Exceptions $exceptions): void {
         //
