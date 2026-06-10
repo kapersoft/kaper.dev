@@ -152,3 +152,45 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - Do NOT delete tests without approval.
 
 </laravel-boost-guidelines>
+
+## Cursor Cloud specific instructions
+
+### Runtime requirements
+
+- **PHP 8.5** with extensions: `mbstring`, `xml`, `sqlite3`, `mysql`, `curl`, `zip`, `bcmath`, `intl`. On Ubuntu 24.04, use the `ondrej/php` PPA (`php8.5-cli` and the extensions above).
+- **Composer** is required; there is **no Node.js / npm** in this repo.
+- Outbound HTTPS to `https://pinkary.com` (or `PINKARY_BASE_URL`) is required for live proxy browsing; Pest tests mock HTTP and do not need Pinkary.
+
+### First-time / local `.env`
+
+If `.env` is missing after clone:
+
+```bash
+cp .env.example .env
+php artisan key:generate --no-interaction
+touch database/database.sqlite
+php artisan migrate --no-interaction
+```
+
+Set `PINKARY_USERNAME` in `.env` (defaults to `kapersoft` via config if unset).
+
+### Running the app
+
+```bash
+php artisan serve --host=0.0.0.0 --port=8000
+```
+
+All routes proxy to Pinkary; `GET /` serves the configured profile. Asset paths (`/img`, `/storage`, `/build`, etc.) are rewritten to the local host in HTML responses.
+
+### Lint, analysis, and tests
+
+| Command | Purpose |
+|---|---|
+| `vendor/bin/pint --test` | Code style |
+| `composer analyse` | PHPStan |
+| `php artisan test --compact` | Pest feature tests |
+
+### Services not needed
+
+- No Redis, queue worker, or Vite dev server for normal development.
+- SQLite is configured in `.env.example` but the proxy logic is stateless; only file cache + writable `storage/` matter at runtime.
