@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 class SetEdgeCacheHeaders
 {
     public function __construct(
-        private SetCacheHeaders $setCacheHeaders,
+        private readonly SetCacheHeaders $setCacheHeaders,
     ) {}
 
     /**
