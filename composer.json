@@ -9,20 +9,20 @@
     ],
     "require": {
         "php": "^8.5",
-        "laravel/framework": "^13.0"
+        "laravel/framework": "^13.15"
     },
     "require-dev": {
         "driftingly/rector-laravel": "^2.5",
         "ergebnis/composer-normalize": "^2.52",
-        "larastan/larastan": "^3.0",
-        "laravel/boost": "^2.4",
+        "larastan/larastan": "^3.10",
+        "laravel/boost": "^2.4.10",
         "laravel/pao": "^1.1",
-        "laravel/pint": "^1.29",
-        "nunomaduro/collision": "^8.9",
-        "pestphp/pest": "^4.7",
+        "laravel/pint": "^1.29.1",
+        "nunomaduro/collision": "^8.9.4",
+        "pestphp/pest": "^4.7.2",
         "pestphp/pest-plugin-laravel": "^4.1",
-        "rector/rector": "^2.4",
-        "spatie/laravel-ray": "^1.43"
+        "rector/rector": "^2.4.5",
+        "spatie/laravel-ray": "^1.43.9"
     },
     "prefer-stable": true,
     "autoload": {
