@@ -1,4 +1,0 @@
-# Dependabot auto-merge requires contents:write and pull-requests:write on its
-# workflow; moat treats any write scope as a failure for this check.
-[checks]
-repositories_workflow_permissions_are_restricted = "off"
