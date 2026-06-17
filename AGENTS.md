@@ -155,24 +155,13 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 ## Cursor Cloud specific instructions
 
-### Runtime requirements
+This is a single-page, **stateless** Laravel personal profile site (kaper.dev). The only meaningful route is `GET /` (`ProfileController` → `resources/views/profile.blade.php`), plus the `/up` health endpoint. Profile content (name, roles, links, headshot) lives in `config/profile.php`; the page is fully server-rendered Blade with inline CSS.
 
-- **PHP 8.5** with extensions: `mbstring`, `xml`, `sqlite3`, `mysql`, `curl`, `zip`, `bcmath`, `intl`. On Ubuntu 24.04, use the `ondrej/php` PPA (`php8.5-cli` and the extensions above).
-- **Composer** is required; there is **no Node.js / npm** in this repo.
-- Outbound HTTPS to `https://pinkary.com` (or `PINKARY_BASE_URL`) is required for live proxy browsing; Pest tests mock HTTP and do not need Pinkary.
+### Runtime notes
 
-### First-time / local `.env`
-
-If `.env` is missing after clone:
-
-```bash
-cp .env.example .env
-php artisan key:generate --no-interaction
-touch database/database.sqlite
-php artisan migrate --no-interaction
-```
-
-Set `PINKARY_USERNAME` in `.env` (defaults to `kapersoft` via config if unset).
+- **No Node.js / npm / Vite.** All styling is inline in the Blade view; there is no asset build step.
+- **No database, Redis, or queue worker at runtime.** Session/CSRF/cookie middleware are intentionally removed in `bootstrap/app.php` so responses are edge-cacheable, and no route touches the DB. `.env` defaults reference SQLite/Redis but nothing uses them for normal development. There are no migrations.
+- `APP_KEY` must be set (`php artisan key:generate`) — the update script handles this if `.env` exists.
 
 ### Running the app
 
@@ -180,17 +169,12 @@ Set `PINKARY_USERNAME` in `.env` (defaults to `kapersoft` via config if unset).
 php artisan serve --host=0.0.0.0 --port=8000
 ```
 
-All routes proxy to Pinkary; `GET /` serves the configured profile. Asset paths (`/img`, `/storage`, `/build`, etc.) are rewritten to the local host in HTML responses.
+`GET /` renders the profile page and returns edge cache headers (`Cache-Control: public, max-age, s-maxage` + `ETag`); these are asserted by the tests, so don't be surprised that responses set no `Set-Cookie`.
 
 ### Lint, analysis, and tests
 
 | Command | Purpose |
 |---|---|
 | `vendor/bin/pint --test` | Code style |
-| `composer analyse` | PHPStan |
+| `composer analyse` | PHPStan (larastan) |
 | `php artisan test --compact` | Pest feature tests |
-
-### Services not needed
-
-- No Redis, queue worker, or Vite dev server for normal development.
-- SQLite is configured in `.env.example` but the proxy logic is stateless; only file cache + writable `storage/` matter at runtime.
