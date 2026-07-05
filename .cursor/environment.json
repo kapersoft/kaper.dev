@@ -1,0 +1,15 @@
+{
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "install": "bash .cursor/cloud-agent-install.sh",
+  "start": "php artisan serve --host=0.0.0.0 --port=8000",
+  "terminals": [
+    {
+      "name": "App",
+      "command": "php artisan serve --host=0.0.0.0 --port=8000",
+      "ports": [8000]
+    }
+  ]
+}
