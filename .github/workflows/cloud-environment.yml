@@ -1,13 +1,15 @@
 name: Cloud environment
 
 on:
-  push:
+  pull_request:
     paths:
       - '.cursor/**'
       - 'composer.json'
       - 'composer.lock'
       - '.github/workflows/cloud-environment.yml'
-  pull_request:
+  push:
+    branches:
+      - main
     paths:
       - '.cursor/**'
       - 'composer.json'
